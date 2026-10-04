@@ -1,6 +1,6 @@
 // Same-origin by default (FastAPI serves this page). If you host the frontend
 // elsewhere, put your API URL here, e.g. "https://your-api.onrender.com"
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://creadit-risk-assesment-using-shap.onrender.com";
 
 const $ = (s) => document.querySelector(s);
 const form = $("#form"), result = $("#result"), fill = $("#fill");
