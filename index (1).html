@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan Risk Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style (1).css">
+</head>
+<body>
+<main class="shell">
+  <section class="panel form-panel">
+    <header class="intro">
+      <h1>Will this loan be repaid?</h1>
+      <p>Fill in the applicant's details and the model estimates the chance of default.</p>
+      <div class="examples">
+        <span>Try an example:</span>
+        <button type="button" class="ghost" data-example="safe">Steady borrower</button>
+        <button type="button" class="ghost" data-example="risky">Stretched borrower</button>
+      </div>
+    </header>
+
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>Applicant</legend>
+        <div class="grid">
+          <label>Age
+            <input type="number" name="person_age" min="18" max="100" value="30" required>
+          </label>
+          <label>Yearly income (₹ / $)
+            <input type="number" name="person_income" min="1" value="60000" required>
+          </label>
+          <label>Home ownership
+            <select name="person_home_ownership">
+              <option>RENT</option><option>OWN</option><option>MORTGAGE</option><option>OTHER</option>
+            </select>
+          </label>
+          <label>Years employed
+            <input type="number" name="person_emp_length" min="0" step="0.5" value="4" required>
+          </label>
+          <label>Credit history (years)
+            <input type="number" name="cb_person_cred_hist_length" min="0" value="5" required>
+          </label>
+          <div class="field">Past default on file
+            <div class="seg" id="defaultSeg">
+              <input type="radio" name="cb_person_default_on_file" id="dN" value="N" checked><label for="dN">No</label>
+              <input type="radio" name="cb_person_default_on_file" id="dY" value="Y"><label for="dY">Yes</label>
+              <i class="seg-thumb"></i>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Loan</legend>
+        <div class="grid">
+          <label>Purpose
+            <select name="loan_intent">
+              <option>PERSONAL</option><option>EDUCATION</option><option>MEDICAL</option>
+              <option>VENTURE</option><option>HOMEIMPROVEMENT</option><option>DEBTCONSOLIDATION</option>
+            </select>
+          </label>
+          <label>Loan amount
+            <input type="number" name="loan_amnt" min="1" value="10000" required>
+          </label>
+          <label>Interest rate (%)
+            <input type="number" name="loan_int_rate" min="0" step="0.01" value="11.5" required>
+          </label>
+          <div class="field">Share of income
+            <output id="pctOut">17%</output>
+            <small>Calculated from amount ÷ income</small>
+          </div>
+        </div>
+        <div class="field grade-field">Loan grade
+          <div class="grades" id="grades"></div>
+          <input type="hidden" name="loan_grade" value="B">
+        </div>
+      </fieldset>
+
+      <button type="submit" id="submit" class="primary"><span class="label">Check risk</span><span class="spinner" aria-hidden="true"></span></button>
+      <p class="error" id="error" role="alert" hidden></p>
+    </form>
+  </section>
+
+  <aside class="panel result-panel" id="result" data-state="idle">
+    <div class="gauge-wrap">
+      <svg viewBox="0 0 240 140" class="gauge" aria-hidden="true">
+        <path class="track" d="M20 120 A100 100 0 0 1 220 120" pathLength="100"/>
+        <path class="fill" id="fill" d="M20 120 A100 100 0 0 1 220 120" pathLength="100"/>
+        <line id="tick" class="tick" x1="0" y1="0" x2="0" y2="0"/>
+        <text id="tickLabel" class="tick-label" text-anchor="middle">cut-off</text>
+      </svg>
+      <div class="readout">
+        <div class="big"><span id="pct">--</span><small>%</small></div>
+        <div class="sub">chance of default</div>
+      </div>
+    </div>
+
+    <div class="verdict" id="verdict">
+      <h2 id="verdictTitle">Waiting for details</h2>
+      <p id="verdictText">Run a check and the result appears here.</p>
+    </div>
+
+    <dl class="facts" id="facts" hidden>
+      <div><dt>Model score</dt><dd id="fScore">-</dd></div>
+      <div><dt>Decision cut-off</dt><dd id="fThresh">-</dd></div>
+      <div><dt>Margin</dt><dd id="fMargin">-</dd></div>
+    </dl>
+  </aside>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
